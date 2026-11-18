@@ -4,12 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Sistem Penghuni Kos')</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: { extend: { fontFamily: { sans: ['Poppins', 'sans-serif'] } } }
+        }
+    </script>
 </head>
 <body class="bg-gray-100 text-gray-800">
     <nav class="bg-white shadow">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="{{ route('penghuni.index') }}" class="text-xl font-bold text-purple-700">Sistem Penghuni Kos</a>
+            <a href="{{ route('penghuni.index') }}" class="text-xl font-bold text-green-700">Sistem Penghuni Kos</a>
 
             @auth
                 <div class="flex items-center gap-3 text-sm">

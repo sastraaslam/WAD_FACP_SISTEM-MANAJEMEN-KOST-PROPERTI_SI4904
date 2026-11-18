@@ -62,7 +62,7 @@
                 <a href="{{ route('penghuni.index') }}"
                    class="bg-gray-300 py-2 px-6 rounded-full hover:bg-gray-400">Kembali</a>
                 <button type="submit"
-                        class="bg-yellow-500 text-white py-2 px-6 rounded-full hover:bg-yellow-600">Update</button>
+                        class="bg-green-500 text-white py-2 px-6 rounded-full hover:bg-green-600">Update</button>
             </div>
         </form>
     </div>
