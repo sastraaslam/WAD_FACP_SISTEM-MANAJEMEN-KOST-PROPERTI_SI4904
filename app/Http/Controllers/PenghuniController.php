@@ -19,16 +19,40 @@ class PenghuniController extends Controller
         );
     }
 
-    public function index()
-    {
-        $user = auth()->user();
+    public function index(Request $request)
+{
+    $user = auth()->user();
 
-        // Pemilik lihat semua, penghuni hanya miliknya
-        $penghunis = $user->isPemilik()
-            ? Penghuni::latest()->get()
-            : Penghuni::where('user_id', $user->id)->latest()->get();
+    // Dasar data: pemilik lihat semua, penghuni hanya miliknya
+    $base = $user->isPemilik()
+        ? Penghuni::query()
+        : Penghuni::where('user_id', $user->id);
 
-        return view('penghuni.index', compact('penghunis'));
+    // Statistik (dari data dasar, belum difilter)
+    $stats = [
+        'total'     => (clone $base)->count(),
+        'laki'      => (clone $base)->where('jk', 'Laki-laki')->count(),
+        'perempuan' => (clone $base)->where('jk', 'Perempuan')->count(),
+        'pekerjaan' => (clone $base)->distinct('pekerjaan')->count('pekerjaan'),
+    ];
+
+    // Pencarian & filter
+    $query = clone $base;
+
+    if ($request->filled('q')) {
+        $query->where(function ($w) use ($request) {
+            $w->where('nama', 'like', '%' . $request->q . '%')
+              ->orWhere('nik', 'like', '%' . $request->q . '%');
+        });
+    }
+
+    if ($request->filled('jk')) {
+        $query->where('jk', $request->jk);
+    }
+
+    $penghunis = $query->latest()->get();
+
+    return view('penghuni.index', compact('penghunis', 'stats'));
     }
 
     public function create()
